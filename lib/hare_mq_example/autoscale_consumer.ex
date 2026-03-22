@@ -8,7 +8,7 @@ defmodule HareMqExample.AutoScaleConsumer do
       min_consumers: 1,
       max_consumers: 5,
       messages_per_consumer: 1,
-      check_interval: 5_000
+      check_interval_ms: 5_000
     ],
     connection_name: {:global, :hare_mq_connection}
 
