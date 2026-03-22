@@ -41,11 +41,11 @@ defmodule HareMqExample.TelemetryExamples do
   end
 
   def handle_connection([:hare_mq, :connection, :disconnected], _measurements, metadata, _config) do
-    Logger.warn("[Telemetry][HareMq] disconnected from #{metadata[:host]}: #{inspect(metadata[:reason])}")
+    Logger.warning("[Telemetry][HareMq] disconnected from #{metadata[:host]}: #{inspect(metadata[:reason])}")
   end
 
   def handle_connection([:hare_mq, :connection, :reconnecting], measurements, metadata, _config) do
-    Logger.warn("[Telemetry][HareMq] reconnecting to #{metadata[:host]} in #{measurements[:retry_delay_ms]}ms, reason: #{inspect(metadata[:reason])}")
+    Logger.warning("[Telemetry][HareMq] reconnecting to #{metadata[:host]} in #{measurements[:retry_delay_ms]}ms, reason: #{inspect(metadata[:reason])}")
   end
 
   def handle_consumer([:hare_mq, :consumer, :message, :start], _measurements, metadata, _config) do

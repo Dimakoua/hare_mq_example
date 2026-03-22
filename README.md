@@ -122,8 +122,15 @@ end
 # - Auto-scaler starts with 2 workers (consumer_count: 2)
 # - As queue messages increase, it scales up to max 5 workers
 # - As queue empties, it scales back down to min 1 worker
-# HareMqExample.AutoScaleConsumer received: %{id: 1, message: "autoscale_test_1", ts: ...}
-# HareMqExample.AutoScaleConsumer received: %{id: 2, message: "autoscale_test_2", ts: ...}
+# - Per-message log from each worker
+#
+# [2026-03-22T17:04:50.974123Z] AutoScaleConsumer (#PID<0.773.0>) start processing
+# AutoScaleConsumer (#PID<0.773.0>) received: %{...}
+# [2026-03-22T17:04:50.974306Z] AutoScaleConsumer (#PID<0.773.0>) sleeping 1000ms
+# [2026-03-22T17:04:51.976821Z] AutoScaleConsumer (#PID<0.773.0>) done processing
+# [debug] [Elixir.HareMqExample.AutoScaleConsumer] Queue check: 198 messages, current consumers: 1, target: 5
+# [debug] [Elixir.HareMqExample.AutoScaleConsumer] Scaling UP from 1 to 5 consumers (adding 4)
+# [2026-03-22T17:04:52.111761Z] AutoScaleConsumer (#PID<0.796.0>) start processing
 # ...
 ```
 
@@ -138,8 +145,7 @@ HareMqExample.DelayPublisher.publish_message(%{event: "delay_test", ts: DateTime
 # - Message is retried with delays: 1s, 5s, 15s, 30s (delay_cascade_in_ms)
 # - After 5 retries (retry_limit: 5), message is dead-lettered
 # - Check logs for retry attempts:
-#   [debug] Retrying message after 1000ms (attempt 1)
-#   [debug] Retrying message after 5000ms (attempt 2)
+#   [debug] Sending message to a delay queue
 #   ...
 # - Dead-lettered message ends up in "delay_queue.dead"
 ```
@@ -151,8 +157,8 @@ HareMqExample.DelayPublisher.publish_message(%{event: "delay_test", ts: DateTime
 HareMqExample.TopicPublisher.publish_message(%{event: "topic_test", ts: DateTime.utc_now()})
 
 # Expected output in logs (both consumers receive the message):
-# HareMqExample.TopicConsumerA received: %{event: "topic_test", ts: ...}
-# HareMqExample.TopicConsumerB received: %{event: "topic_test", ts: ...}
+# TopicConsumerA received: %{event: "topic_test", ts: ...}
+# TopicConsumerB received: %{event: "topic_test", ts: ...}
 
 # Topic patterns:
 # - TopicConsumerA binds to: "topic.event.*"
