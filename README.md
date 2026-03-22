@@ -114,7 +114,7 @@ HareMqExample.StreamPublisher.publish_message(%{event: "stream_event_2", ts: Dat
 
 ```elixir
 # Publish multiple messages (auto-scaler will adjust worker count)
-for i <- 1..200000 do
+for i <- 1..20 do
   HareMqExample.AutoScalePublisher.publish_message(%{id: i, message: "autoscale_test_#{i}", ts: DateTime.utc_now()})
 end
 
