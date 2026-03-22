@@ -1,0 +1,16 @@
+{
+  "name": "HareMq Example Dev Container",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "elixir",
+  "postCreateCommand": "mix deps.get",
+  "remoteUser": "vscode",
+  "workspaceFolder": "/workspace",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash",
+        "elixirLS.dialyzerEnabled": true
+      }
+    }
+  }
+}
