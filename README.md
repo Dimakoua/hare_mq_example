@@ -1,6 +1,6 @@
 # HareMqExample
 
-This example app demonstrates how to use `hare_mq` (from `Dimakoua/hare_mq` branch `dev`) in a Phoenix-based project.
+This example app demonstrates how to use `hare_mq` (version `1.4.0`) in a Phoenix-based project.
 
 ## Setup
 
@@ -18,7 +18,7 @@ This example app demonstrates how to use `hare_mq` (from `Dimakoua/hare_mq` bran
 
 In `mix.exs`, this app uses:
 ```elixir
-{:hare_mq, github: "Dimakoua/hare_mq", branch: "dev"}
+{:hare_mq, "~> 1.4.0"}
 ```
 
 ### Configuration
