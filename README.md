@@ -267,6 +267,11 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
 
+## HareMQ Resources
+
+* [GitHub Repository](https://github.com/Dimakoua/hare_mq)
+* [Hex Package](https://hex.pm/packages/hare_mq)
+
 ## Learn more
 
 * Official website: https://www.phoenixframework.org/
