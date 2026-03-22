@@ -114,7 +114,7 @@ HareMqExample.StreamPublisher.publish_message(%{event: "stream_event_2", ts: Dat
 
 ```elixir
 # Publish multiple messages (auto-scaler will adjust worker count)
-for i <- 1..20 do
+for i <- 1..200 do
   HareMqExample.AutoScalePublisher.publish_message(%{id: i, message: "autoscale_test_#{i}", ts: DateTime.utc_now()})
 end
 
@@ -192,6 +192,48 @@ Add telemetry handlers to observe:
 ```bash
 RABBITMQ_URL=amqp://guest:guest@localhost:5672 mix test
 ```
+
+## Telemetry examples
+
+1. Add telemetry attach in `lib/hare_mq_example/application.ex`:
+
+```elixir
+def start(_type, _args) do
+  children = [
+    {HareMq.Connection, name: {:global, :hare_mq_connection}},
+    HareMqExample.MessagePublisher,
+    HareMqExample.MessageConsumer,
+    HareMqExample.StreamPublisher,
+    HareMqExample.StreamConsumer,
+    HareMqExample.AutoScalePublisher,
+    HareMqExample.AutoScaleConsumer,
+    HapreMqExample.DelayPublisher,
+    HareMqExample.DelayConsumer,
+    HareMqExample.TopicPublisher,
+    HareMqExample.TopicConsumerA,
+    HareMqExample.TopicConsumerB,
+    HareMqExampleWeb.Endpoint
+  ]
+
+  HareMqExample.TelemetryExamples.attach()
+
+  Supervisor.start_link(children, strategy: :one_for_one, name: HareMqExample.Supervisor)
+end
+```
+
+2. Or manually in `iex`:
+
+```elixir
+iex> HareMqExample.TelemetryExamples.attach()
+```
+
+3. Start the app with telemetry logging:
+
+```bash
+RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672 iex -S mix phx.server
+```
+
+You should see connection and consumer events in the logger as they occur.
 
 ### Docker Compose
 

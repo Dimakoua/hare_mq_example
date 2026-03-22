@@ -14,8 +14,17 @@ defmodule HareMqExample.AutoScaleConsumer do
 
   @impl true
   def consume(message) do
-    IO.inspect(message, label: "HareMqExample.AutoScaleConsumer received")
+    consumer_pid = inspect(self())
+    start_ts = DateTime.utc_now() |> DateTime.to_iso8601()
+    IO.puts("[#{start_ts}] AutoScaleConsumer (#{consumer_pid}) start processing")
+    IO.inspect(message, label: "AutoScaleConsumer (#{consumer_pid}) received")
+
+    sleep_ts = DateTime.utc_now() |> DateTime.to_iso8601()
+    IO.puts("[#{sleep_ts}] AutoScaleConsumer (#{consumer_pid}) sleeping 1000ms")
     Process.sleep(1000)
+
+    done_ts = DateTime.utc_now() |> DateTime.to_iso8601()
+    IO.puts("[#{done_ts}] AutoScaleConsumer (#{consumer_pid}) done processing")
     :ok
   end
 end
