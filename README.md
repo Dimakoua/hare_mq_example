@@ -67,6 +67,40 @@ defmodule HareMqExample.MessageConsumer do
 end
 ```
 
+### Batch consumer implementation
+
+[batch_publisher.ex](lib/hare_mq_example/batch_publisher.ex) / [batch_consumer.ex](lib/hare_mq_example/batch_consumer.ex):
+```elixir
+defmodule HareMqExample.BatchPublisher do
+  use HareMq.Publisher,
+    exchange: "batch_exchange",
+    routing_key: "batch_routing_key",
+    connection_name: {:global, :hare_mq_connection}
+end
+
+defmodule HareMqExample.BatchConsumer do
+  use HareMq.Consumer,
+    queue_name: "batch_queue",
+    routing_key: "batch_routing_key",
+    exchange: "batch_exchange",
+    batch_size: 10,
+    batch_timeout_ms: 2_000,
+    connection_name: {:global, :hare_mq_connection}
+
+  def consume(messages, :batch) do
+    IO.puts("BatchConsumer received batch of #{length(messages)} messages")
+    IO.inspect(messages, label: "BatchConsumer batch")
+    :ok
+  end
+end
+```
+
+When `batch_size > 1`:
+- `prefetch_count` is automatically raised to at least `batch_size`.
+- Messages are buffered until `batch_size` is reached **or** `batch_timeout_ms` elapses (partial flush).
+- `consume/2` is called with the accumulated list and the `:batch` atom.
+- Returning `:ok` / `{:ok, _}` acknowledges every message in the batch; `:error` / `{:error, _}` triggers the retry/dead-letter logic for each message.
+
 ## Testing all modules from iex
 
 Start an interactive shell:
@@ -150,6 +184,23 @@ HareMqExample.DelayPublisher.publish_message(%{event: "delay_test", ts: DateTime
 # - Dead-lettered message ends up in "delay_queue.dead"
 ```
 
+### Batch consumer
+
+```elixir
+# Publish a burst of messages — consumer accumulates up to 10 or waits 2 s
+for i <- 1..25 do
+  HareMqExample.BatchPublisher.publish_message(%{id: i, payload: "batch_item_#{i}", ts: DateTime.utc_now()})
+end
+
+# Expected output in logs:
+# BatchConsumer received batch of 10 messages
+# BatchConsumer batch: [%{id: 1, ...}, %{id: 2, ...}, ...]
+# BatchConsumer received batch of 10 messages
+# BatchConsumer batch: [%{id: 11, ...}, ...]
+# BatchConsumer received batch of 5 messages   # partial flush after batch_timeout_ms
+# BatchConsumer batch: [%{id: 21, ...}, ...]
+```
+
 ### Topic routing publishers + consumers
 
 ```elixir
@@ -175,6 +226,7 @@ HareMqExample.StreamPublisher.publish_message(%{test: "stream_message", ts: Date
 HareMqExample.AutoScalePublisher.publish_message(%{test: "autoscale_message", ts: DateTime.utc_now()})
 HareMqExample.DelayPublisher.publish_message(%{test: "delay_message", ts: DateTime.utc_now()})
 HareMqExample.TopicPublisher.publish_message(%{test: "topic_message", ts: DateTime.utc_now()})
+HareMqExample.BatchPublisher.publish_message(%{test: "batch_message", ts: DateTime.utc_now()})
 
 # All consumers should log their received messages
 ```

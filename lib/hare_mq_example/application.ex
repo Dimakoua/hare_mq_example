@@ -23,6 +23,8 @@ defmodule HareMqExample.Application do
       HareMqExample.TopicPublisher,
       HareMqExample.TopicConsumerA,
       HareMqExample.TopicConsumerB,
+      HareMqExample.BatchPublisher,
+      HareMqExample.BatchConsumer,
       # Start a worker by calling: HareMqExample.Worker.start_link(arg)
       # {HareMqExample.Worker, arg},
       # Start to serve requests, typically the last entry
