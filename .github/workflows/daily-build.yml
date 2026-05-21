@@ -68,9 +68,6 @@ jobs:
         run: mix test
         env:
           RABBITMQ_URL: amqp://guest:guest@localhost:5672
-      
-      - name: Generate documentation
-        run: mix docs
-    
+
     permissions:
       contents: read
