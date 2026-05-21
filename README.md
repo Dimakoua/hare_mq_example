@@ -1,6 +1,13 @@
 # HareMqExample
 
+[![Daily Build](https://github.com/Dimakoua/hare_mq_example/actions/workflows/daily-build.yml/badge.svg)](https://github.com/Dimakoua/hare_mq_example/actions/workflows/daily-build.yml)
+[![Hex.pm](https://img.shields.io/hexpm/v/hare_mq.svg)](https://hex.pm/packages/hare_mq)
+[![Hex.pm Downloads](https://img.shields.io/hexpm/dt/hare_mq.svg)](https://hex.pm/packages/hare_mq)
+[![License](https://img.shields.io/hexpm/l/hare_mq.svg)](https://github.com/Dimakoua/hare_mq/blob/main/LICENSE)
+
 This example app demonstrates how to use `hare_mq` (version `1.4.0`) in a Phoenix-based project.
+
+> **What's hare_mq?** A robust Elixir messaging library for RabbitMQ with built-in retry logic, batch processing, and stream support. See [hare_mq on Hex.pm](https://hex.pm/packages/hare_mq) or [GitHub](https://github.com/Dimakoua/hare_mq).
 
 ## Setup
 
