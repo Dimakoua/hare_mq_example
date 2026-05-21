@@ -37,22 +37,32 @@ defmodule HareMqExample.TelemetryExamples do
   end
 
   def handle_connection([:hare_mq, :connection, :connected], measurements, metadata, _config) do
-    Logger.info("[Telemetry][HareMq] connected to #{metadata[:host]} in #{measurements[:duration] || 0}ms")
+    Logger.info(
+      "[Telemetry][HareMq] connected to #{metadata[:host]} in #{measurements[:duration] || 0}ms"
+    )
   end
 
   def handle_connection([:hare_mq, :connection, :disconnected], _measurements, metadata, _config) do
-    Logger.warning("[Telemetry][HareMq] disconnected from #{metadata[:host]}: #{inspect(metadata[:reason])}")
+    Logger.warning(
+      "[Telemetry][HareMq] disconnected from #{metadata[:host]}: #{inspect(metadata[:reason])}"
+    )
   end
 
   def handle_connection([:hare_mq, :connection, :reconnecting], measurements, metadata, _config) do
-    Logger.warning("[Telemetry][HareMq] reconnecting to #{metadata[:host]} in #{measurements[:retry_delay_ms]}ms, reason: #{inspect(metadata[:reason])}")
+    Logger.warning(
+      "[Telemetry][HareMq] reconnecting to #{metadata[:host]} in #{measurements[:retry_delay_ms]}ms, reason: #{inspect(metadata[:reason])}"
+    )
   end
 
   def handle_consumer([:hare_mq, :consumer, :message, :start], _measurements, metadata, _config) do
-    Logger.debug("[Telemetry][HareMq] consumer #{metadata[:consumer_tag]} start message #{inspect(metadata[:message_id] || metadata[:delivery_tag])}")
+    Logger.debug(
+      "[Telemetry][HareMq] consumer #{metadata[:consumer_tag]} start message #{inspect(metadata[:message_id] || metadata[:delivery_tag])}"
+    )
   end
 
   def handle_consumer([:hare_mq, :consumer, :message, :stop], measurements, metadata, _config) do
-    Logger.info("[Telemetry][HareMq] consumer #{metadata[:consumer_tag]} done in #{measurements[:duration]}ns")
+    Logger.info(
+      "[Telemetry][HareMq] consumer #{metadata[:consumer_tag]} done in #{measurements[:duration]}ns"
+    )
   end
 end

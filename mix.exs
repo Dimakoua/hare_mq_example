@@ -54,7 +54,7 @@ defmodule HareMqExample.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.2.0"},
       {:bandit, "~> 1.5"},
-      {:hare_mq,  "~> 1.4.0"}
+      {:hare_mq, "~> 1.4.0"}
     ]
   end
 

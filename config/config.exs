@@ -36,8 +36,7 @@ config :logger, :default_formatter,
   metadata: [:request_id]
 
 # HareMq configuration
-config :hare_mq, :amqp,
-  url: System.get_env("RABBITMQ_URL", "amqp://guest:guest@rabbitmq:5672")
+config :hare_mq, :amqp, url: System.get_env("RABBITMQ_URL", "amqp://guest:guest@rabbitmq:5672")
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
