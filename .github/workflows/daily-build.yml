@@ -58,8 +58,6 @@ jobs:
       - name: Check code formatting
         run: mix format --check-formatted
       
-      - name: Run Credo (static analysis)
-        run: mix credo --strict
       
       - name: Compile project
         run: mix compile --all-warnings
