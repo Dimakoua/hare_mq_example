@@ -3,7 +3,7 @@ name: Daily Build
 on:
   schedule:
     # Runs at minute 0 past every 6th hour (4 times a day)
-    - cron: '0 */6 * * *'
+    - cron: '0 */4 * * *'
   workflow_dispatch: # Allow manual trigger
 
 jobs:
